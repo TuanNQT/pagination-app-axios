@@ -19,6 +19,8 @@
       <jw-pagination
         :items="listallitem"
         @changePage="onChangePage"
+        :pageSize=10
+        :maxPages="10"
       ></jw-pagination>
     </div>
   </div>
