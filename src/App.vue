@@ -1,3 +1,4 @@
+<!-- using vue-jw-pagination
 <template>
   <div>
     <h1 style="text-align: center">List Comment</h1>
@@ -19,7 +20,7 @@
       <jw-pagination
         :items="listallitem"
         @changePage="onChangePage"
-        :pageSize="10"
+        :pageSize=5
         :maxPages="10"
       ></jw-pagination>
     </div>
@@ -78,42 +79,70 @@ del {
 li.inline {
   display: inline;
 }
-</style>
-<!--  thủ công
+</style> -->
+<!--  thủ công -->
 <template>
-<div class="col-sm-12">
-  <div class="offset">
-  <table class="table table-bordered">
-    <thead>
-      <tr>
-        <th> Name</th>
-        <th>Email Name</th>
-        <th>Body</th>
-      </tr>
-    </thead>
-    <tbody>
-    <tr v-for="p in displayedPosts" v-bind:key="p.id">
-      <td>{{p.name}}</td>
-      <td>{{p.email}}</td>
-      <td>{{p.body}}</td>
-    </tr>
-    </tbody>
-  </table>
-    <nav aria-label="Page navigation example">
-			<ul class="pagination">
-				<li class="page-item">
-					<button type="button" class="page-link" v-if="page != 1" @click="page--"> Previous </button>
-				</li>
-				<li class="page-item">
-					<button type="button" class="page-link" v-for="pageNumber in pages.slice(page-1, page+5)" v-bind:key="pageNumber.index" @click="page = pageNumber"> {{pageNumber}} </button>
-				</li>
-				<li class="page-item">
-					<button type="button" @click="page++" v-if="page < pages.length" class="page-link"> Next </button>
-				</li>
-			</ul>
-		</nav>	
+  <div class="col-sm-12">
+    <div class="offset">
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Email Name</th>
+            <th>Body</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="p in displayedPosts" v-bind:key="p.id">
+            <td>{{ p.name }}</td>
+            <td>{{ p.email }}</td>
+            <td>{{ p.body }}</td>
+          </tr>
+        </tbody>
+      </table>
+      <nav aria-label="Page navigation example">
+        <ul class="pagination">
+          <li class="page-item">
+            <button
+              type="button"
+              class="page-link"
+              v-if="page != 1"
+              @click="page--"
+            >
+              Previous
+            </button>
+          </li>
+          <li class="page-item">
+            <button
+              type="button"
+              class="page-link"
+              v-for="pageNumber in pages.slice(
+                page > 1 ? page - 2 : page - 1,
+                page + 5
+              )"
+              v-bind:key="pageNumber.index"
+              @click="page = pageNumber"
+              :style="[
+                pageNumber == page ? { color: 'blue' } : { color: '#29b3ed' },
+              ]"
+            >
+              {{ pageNumber }}
+            </button>
+          </li>
+          <li class="page-item">
+            <button
+              type="button"
+              @click="page++"
+              v-if="page < pages.length"
+              class="page-link"
+            >
+              Next
+            </button>
+          </li>
+        </ul>
+      </nav>
+    </div>
   </div>
-</div>
 </template>
 
 <script>
@@ -122,7 +151,7 @@ import Vue from "vue";
 import VueAxios from "vue-axios";
 Vue.use(VueAxios, axios);
 export default {
-  name :"CommentList",
+  name: "CommentList",
   data() {
     return {
       posts: [""],
@@ -173,22 +202,22 @@ export default {
 };
 </script>
 <style scoped>
-li.page-item{
+li.page-item {
   display: inherit;
 }
 button.page-link {
-	display: inline-block;
+  display: inline-block;
 }
 button.page-link {
-    font-size: 20px;
-    color: #29b3ed;
-    font-weight: 500;
+  font-size: 20px;
+  color: #29b3ed;
+  font-weight: 500;
 }
-.offset{
+.offset {
   width: 800px !important;
-  margin: 20px auto;  
+  margin: 20px auto;
 }
 </style> 
--->
+
 
 
