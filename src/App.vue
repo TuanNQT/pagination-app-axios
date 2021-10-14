@@ -90,6 +90,8 @@ li.inline {
             <th>Name</th>
             <th>Email Name</th>
             <th>Body</th>
+            <th>Post ID</th>
+            <th>ID</th>
           </tr>
         </thead>
         <tbody>
@@ -97,8 +99,49 @@ li.inline {
             <td>{{ p.name }}</td>
             <td>{{ p.email }}</td>
             <td>{{ p.body }}</td>
+            <td>{{ p.postId }}</td>
+            <td>{{ p.id }}</td>
           </tr>
         </tbody>
+        <tfoot>
+          <tr>
+            <td>
+              <input
+                type="text"
+                v-model="objPost.name"
+                placeholder="Input Name"
+                required
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                v-model="objPost.email"
+                placeholder="Input Email"
+                required
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                v-model="objPost.body"
+                placeholder="Input Body"
+                required
+              />
+            </td>
+            <td>
+              <input
+                type="number"
+                v-model="objPost.postId"
+                placeholder="Post ID"
+                required
+              />
+            </td>
+          </tr>
+          <tr>
+            <button v-on:click="addPost()" class="btn-primary">Add Post</button>
+          </tr>
+        </tfoot>
       </table>
       <nav aria-label="Page navigation example">
         <ul class="pagination">
@@ -110,6 +153,9 @@ li.inline {
               @click="page--"
             >
               Previous
+            </button>
+            <button type="button" class="page-link" @click="page = 1">
+              Last Page
             </button>
           </li>
           <li class="page-item">
@@ -138,6 +184,13 @@ li.inline {
             >
               Next
             </button>
+            <button
+              type="button"
+              class="page-link"
+              @click="page = pages.length"
+            >
+              End Page
+            </button>
           </li>
         </ul>
       </nav>
@@ -154,6 +207,7 @@ export default {
   name: "CommentList",
   data() {
     return {
+      objPost: { postId: "", name: "", email: "", body: "" },
       posts: [""],
       page: 1,
       perPage: 9,
@@ -163,7 +217,11 @@ export default {
   methods: {
     getPosts() {
       axios.get("http://jsonplaceholder.typicode.com/comments").then((resp) => {
-        this.posts = resp.data;
+        if (localStorage.posts == undefined) {
+          localStorage.setItem("posts", JSON.stringify(resp.data)); //Save LocaStorage
+        }
+        this.posts = JSON.parse(localStorage.getItem("posts")); // gán post = LocalStorage
+        this.sort();
         console.log(resp.data);
       });
     },
@@ -179,6 +237,27 @@ export default {
       let from = page * perPage - perPage;
       let to = page * perPage;
       return posts.slice(from, to);
+    },
+    sort() {
+      this.posts.sort((a, b) => b.id - a.id);
+    },
+    addPost() {
+      this.objPost.id = this.posts.length + 1;
+      var objAdd = {
+        name: this.objPost.name,
+        email: this.objPost.email,
+        body: this.objPost.body,
+        postId: this.objPost.postId,
+        id: this.objPost.id,
+      };
+      this.posts.push(objAdd);
+      localStorage.setItem("posts", JSON.stringify(this.posts));
+      this.posts = JSON.parse(localStorage.getItem("posts"));
+      this.sort();
+      this.objPost.name = "";
+      this.objPost.email = "";
+      this.objPost.body = "";
+      this.objPost.postId = "";
     },
   },
   computed: {
