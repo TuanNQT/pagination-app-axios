@@ -244,15 +244,14 @@ export default {
     addPost() {
       this.objPost.id = this.posts.length + 1;
       var objAdd = {
+        postId: parseInt(this.objPost.postId),
+        id: this.objPost.id,
         name: this.objPost.name,
         email: this.objPost.email,
         body: this.objPost.body,
-        postId: this.objPost.postId,
-        id: this.objPost.id,
       };
       this.posts.push(objAdd);
       localStorage.setItem("posts", JSON.stringify(this.posts));
-      this.posts = JSON.parse(localStorage.getItem("posts"));
       this.sort();
       this.objPost.name = "";
       this.objPost.email = "";
